@@ -1,0 +1,261 @@
+Configure the New Relic Terraform provider.
+Import the existing New Relic resources into Terraform state.
+Generate or write the Terraform code.
+Commit the Terraform code into your GitHub repository.
+Use GitHub Actions (or your existing CI/CD pipeline) to manage future changes.
+Overall Architecture
+Existing New Relic
+    │
+    │  (API / Terraform Provider)
+    ▼
+Terraform
+    │
+terraform import
+    │
+Terraform State (.tfstate)
+    │
+Terraform Configuration (.tf)
+    │
+GitHub Repository
+    │
+GitHub Actions
+    │
+terraform plan
+terraform apply
+Step 1 - Create a New Relic API Key
+
+Terraform uses a User API Key (NRAK-xxxx).
+
+Go to
+
+API Keys
+
+Administration → API Keys
+
+Create
+
+User Key
+
+Prefix:
+
+NRAK-
+
+You will also need
+
+Account ID
+Region
+US
+EU
+
+The New Relic provider requires your account ID, API key, and region to authenticate.
+
+Step 2 - Install Terraform
+terraform version
+Step 3 - Create Provider
+terraform {
+  required_providers {
+    newrelic = {
+      source  = "newrelic/newrelic"
+      version = "~> 3.0"
+    }
+  }
+}
+
+provider "newrelic" {
+  account_id = var.account_id
+  api_key    = var.api_key
+  region     = "US"
+}
+
+Store secrets in variables or environment variables instead of hardcoding them. The provider supports this configuration approach.
+
+variables.tf
+variable "account_id" {}
+
+variable "api_key" {
+  sensitive = true
+}
+terraform.tfvars
+account_id = "12345678"
+api_key    = "NRAK-xxxxxxxxxxxx"
+Step 4 - Resources
+
+For Alerts
+
+resource "newrelic_alert_policy" "prod" {
+
+}
+
+For NRQL Alert
+
+resource "newrelic_nrql_alert_condition" "cpu" {
+
+}
+
+For Synthetic Monitor
+
+resource "newrelic_synthetics_monitor" "homepage" {
+
+}
+
+New Relic recommends using newrelic_nrql_alert_condition for alert conditions instead of the older newrelic_alert_condition, which is deprecated.
+
+Step 5 - Import Existing Resources
+Import Alert Policy
+
+Example
+
+terraform import \
+newrelic_alert_policy.prod \
+123456:987654
+
+Format
+
+policy_id:account_id
+
+This composite ID format is required by the provider.
+
+Import NRQL Alert
+
+Example
+
+terraform import \
+newrelic_nrql_alert_condition.cpu \
+123456:987654
+Import Synthetic Monitor
+
+Example
+
+terraform import \
+newrelic_synthetics_monitor.homepage \
+abcd1234-5678
+
+Import support is available for Synthetics monitor resources.
+
+Step 6 - Generate Terraform Code
+
+Terraform import only imports the state.
+
+It does not generate
+
+main.tf
+
+You'll need to:
+
+terraform state show RESOURCE
+
+Example
+
+terraform state show newrelic_alert_policy.prod
+
+Output
+
+resource "newrelic_alert_policy" "prod" {
+  incident_preference = "PER_POLICY"
+  name = "Production Policy"
+}
+
+Copy this output into
+
+alerts.tf
+
+Repeat for every resource.
+
+Step 7 - Organize Repository
+
+A typical layout:
+
+terraform-newrelic/
+
+│
+├── provider.tf
+├── variables.tf
+├── terraform.tfvars
+├── alerts.tf
+├── synthetics.tf
+├── outputs.tf
+├── versions.tf
+│
+└── .github/
+      workflows/
+           terraform.yml
+Step 8 - Push into GitHub
+git init
+
+git add .
+
+git commit -m "Initial New Relic Terraform"
+
+git remote add origin https://github.com/Org/newrelic-iac.git
+
+git push -u origin main
+Step 9 - GitHub Actions
+
+Example workflow
+
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  terraform:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: hashicorp/setup-terraform@v3
+
+    - run: terraform init
+
+    - run: terraform validate
+
+    - run: terraform plan
+      env:
+        TF_VAR_account_id: ${{ secrets.NR_ACCOUNT_ID }}
+        TF_VAR_api_key: ${{ secrets.NR_API_KEY }}
+
+Store NR_ACCOUNT_ID and NR_API_KEY as GitHub repository secrets.
+
+Useful New Relic Terraform Resources
+Resource	Purpose
+newrelic_alert_policy	Alert policies
+newrelic_nrql_alert_condition	NRQL alert conditions
+newrelic_notification_destination	Notification destinations
+newrelic_notification_channel	Notification channels
+newrelic_workflow	Incident workflows
+newrelic_synthetics_monitor	Synthetic monitors
+newrelic_one_dashboard	Dashboards
+APIs Used
+
+The Terraform provider interacts with New Relic's APIs behind the scenes, primarily through:
+
+NerdGraph (GraphQL API) for modern resource management.
+Legacy REST APIs for a few older resources where applicable.
+
+You do not need to call these APIs directly when using Terraform—the provider handles API interactions for you.
+
+Official Documentation
+New Relic Terraform Provider (Terraform Registry)
+Getting Started with New Relic Terraform
+New Relic Terraform Overview
+Alert Policy Resource Documentation
+Synthetics Monitor Resource Documentation
+Recommended for your use case
+
+Since you mentioned you want to import all existing New Relic alerts and monitors into GitHub, I recommend an automated migration workflow:
+
+Export all Alert Policies, NRQL Conditions, Synthetics Monitors, Notification Channels, and Workflows from your New Relic account.
+Import them into Terraform state.
+Generate .tf files organized by resource type.
+Store the code in a GitHub repository.
+Configure a GitHub Actions pipeline to run terraform fmt, validate, plan, and apply.
+Use a remote backend (such as Azure Storage or Terraform Cloud) to manage the Terraform state safely.
+
+Given your experience with GitHub Actions and Azure DevOps migrations, this approach will make your New Relic configuration fully version-controlled and integrated into your CI/CD process.
