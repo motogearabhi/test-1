@@ -1,0 +1,66 @@
+
+# Variables
+$SubscriptionName = "a132-elect-prd-sub"
+$ResourceGroup = "A132-ELECT-PRD-EUS-RG"
+$VMName = "WSQ07545"
+
+$DiskName = "WSQ07545_DataDisk_6"
+$Location = "East US"
+
+$DiskSizeGB = 300
+$Sku = "PremiumV2_LRS"
+
+# Select Subscription
+Set-AzContext -Subscription $SubscriptionName
+
+# Tags
+
+$Tags = @{
+    agencycode        = "0132"
+    agencyname        = "ELECT"
+    clustername       = "WNR07566"
+    "cov-request"     = "PRJ0014383"
+    demand            = "DMND0009795"
+    projectid         = "PRJ0014383"
+    projectname       = "ELECT-PILOT-ENV"
+    Role              = "DEV DW Primary"
+    support_team      = "NTTData"
+    "vita-customer-id" = "132"
+}
+
+# Create Managed Disk
+$DiskConfig = New-AzDiskConfig `
+    -Location $Location `
+    -Zone 1 `
+    -CreateOption Empty `
+    -DiskSizeGB $DiskSizeGB `
+    -SkuName $Sku `
+    -Tag $Tags
+
+$Disk = New-AzDisk `
+    -ResourceGroupName $ResourceGroup `
+    -DiskName $DiskName `
+    -Disk $DiskConfig
+
+Write-Host "Disk created successfully."
+
+# Attach Disk to VM
+
+$VM = Get-AzVM -ResourceGroupName $ResourceGroup -Name $VMName
+
+Add-AzVMDataDisk `
+    -VM $VM `
+    -Name $DiskName `
+    -ManagedDiskId $Disk.Id `
+    -Lun 6 `
+    -Caching None `
+    -CreateOption Attach
+
+Update-AzVM `
+    -ResourceGroupName $ResourceGroup `
+    -VM $VM
+
+Write-Host ""
+Write-Host "Disk successfully attached to $VMName"
+Write-Host "Disk Name : $DiskName"
+Write-Host "LUN       : 6"
