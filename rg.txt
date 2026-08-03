@@ -1,0 +1,39 @@
+Deploy Azure Resource Group for VDOT under PRJ0015041 - Production
+
+(Replace PRJ0015041 with the correct project number if different.)
+
+Description
+
+Under PRJ0015041, VDOT has requested the creation of a new Azure Resource Group within the agency's subscription to support the deployment of Azure infrastructure and application resources for the VDOT migration project.
+
+Resource Group Specifications
+
+Subscription: <VDOT Production Subscription>
+Resource Group: <Resource Group Name>
+Region: East US (or the appropriate Azure region)
+Environment: Production
+Agency: VDOT - 0501
+
+Configuration
+Create a new Azure Resource Group in the specified subscription.
+Apply the approved naming convention.
+Apply the required resource tags as per VDOT governance standards.
+Validate the Resource Group deployment.
+Confirm that the Resource Group is available for subsequent infrastructure deployments.
+No compute, storage, or networking resources will be deployed as part of this change.
+Resource Tags
+
+The Resource Group will be tagged according to VDOT standards, including (where applicable):
+
+Agency Code
+Agency Name
+Environment
+Project ID
+Project Name
+Cost Center
+Support Team
+Owner
+Application Name
+Expected Outcome
+
+The Resource Group will be successfully created and validated within the designated Azure subscription and will be ready to host future Azure resources required for the VDOT project.
