@@ -1,0 +1,55 @@
+Change Backout Plan
+
+Estimated Backout Duration: 30–60 minutes
+
+Backout Steps
+Log in to the Azure Portal using an account with Network Contributor or equivalent permissions.
+Identify all Network Security Groups (NSGs) updated during the implementation.
+For each affected NSG:
+Navigate to Networking → Network Security Groups.
+Open the Inbound Security Rules section.
+Delete the Base_Deny rule (Priority: 4096).
+Save the changes.
+Repeat the same process under Outbound Security Rules and remove the Base_Deny rule.
+Verify that the NSG configuration has reverted to its previous state.
+Perform connectivity validation to ensure application traffic is restored to the pre-change state.
+Update the ServiceNow Change Request with the rollback activities, validation results, and completion status.
+
+Backout Success Criteria
+
+Base_Deny rule has been removed from all affected NSGs.
+Existing NSG rules remain unchanged.
+Application and network connectivity is restored to the pre-change state.
+No unexpected Azure activity or connectivity issues are observed.
+Validation Plan
+
+Validation Duration: Approximately 30 minutes
+
+Validation Activities
+Verify that the Base_Deny rule has been successfully added to both Inbound and Outbound security rules for every NSG listed in the customer spreadsheet.
+Confirm the rule configuration matches the approved implementation:
+Rule Name: Base_Deny
+Priority: 4096
+Access: Deny
+Protocol: Any (*)
+Source: Any (*)
+Destination: Any (*)
+Confirm all existing NSG rules remain unchanged and retain their original priorities.
+Validate that existing application traffic continues to function as expected by performing connectivity tests from representative source systems.
+Verify there are no unexpected connectivity failures or blocked business traffic after implementation.
+Review Azure Activity Logs (if required) to confirm successful rule creation.
+Obtain customer confirmation (if applicable) that services remain operational.
+Record validation results in the Change Request and mark the implementation as successful.
+
+Validation Success Criteria
+
+Base_Deny rule is present on all targeted NSGs.
+Rule priority is 4096.
+Existing higher-priority allow/deny rules are unchanged.
+Business applications remain accessible.
+No production incidents or unexpected alerts are generated following the change.
+ServiceNow Test Scenario
+
+Since ServiceNow usually asks for Test Scenario and Test Result, you can use the following:
+
+Test Scenario
