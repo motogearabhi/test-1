@@ -1,4 +1,24 @@
-ustification
+Description
+
+Under PRJ0015041, VDOT has requested the addition of a Base Deny Network Security Rule to all Azure Network Security Groups (NSGs) listed in the attached spreadsheet. The rule will be created for both Inbound and Outbound traffic to establish a default deny rule at the lowest priority while ensuring that all existing higher-priority allow rules continue to function as designed.
+
+The following rule will be added:
+
+{
+  "name": "Base_Deny",
+  "description": "Deny all",
+  "protocol": "*",
+  "sourcePortRange": "*",
+  "destinationPortRange": "*",
+  "sourceAddressPrefix": "*",
+  "destinationAddressPrefix": "*",
+  "access": "Deny",
+  "priority": 4096
+}
+
+The implementation will be applied only to the NSGs identified in the customer-provided spreadsheet. No existing security rules will be modified or removed.
+
+Justification
 
 Under PRJ0015041, VDOT has requested the implementation of a baseline security control by adding a Base Deny rule to all specified Azure Network Security Groups. This change aligns with Azure security best practices by ensuring that any traffic not explicitly permitted by higher-priority rules is denied.
 
@@ -66,3 +86,5 @@ Remove the newly created Base_Deny outbound rule.
 Save the NSG configuration.
 Revalidate application connectivity.
 Update the Change Request with rollback details and results.
+
+This wording closely matches the style and level of detail of your previous SQL Server VM change request while being specific to the NSG Base Deny rule implementation.
