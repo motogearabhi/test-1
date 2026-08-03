@@ -37,3 +37,104 @@ Application Name
 Expected Outcome
 
 The Resource Group will be successfully created and validated within the designated Azure subscription and will be ready to host future Azure resources required for the VDOT project.
+
+
+Justification
+
+Under PRJ0015041, VDOT has requested the creation of a new Azure Resource Group to support the Azure migration project. The Resource Group will provide a logical container for Azure resources that will be deployed as part of the VDOT infrastructure and application migration. This change establishes the required Azure foundation while adhering to VDOT naming standards, tagging requirements, and governance policies.
+
+1) What is the impact to the business or COV if these changes are delayed?
+
+There is no immediate production impact as this change only creates a new Azure Resource Group. However, delaying the implementation will postpone the deployment of Azure resources required for the VDOT migration project and may impact project timelines.
+
+2) If these changes are executed, what is the likelihood (probability) of them not going as planned?
+
+Low. Azure Resource Group creation is a standard deployment activity using approved Azure deployment procedures. The implementation follows established naming conventions and governance standards.
+
+3) If they do not go as planned, what will be the impact on the number of users and business functions?
+
+Minimal impact. No production workloads or end users will be affected because the Resource Group is being created to host future Azure resources and does not modify existing infrastructure.
+
+4) If they do not go as planned, what would be the recovery time, either through rollback or roll forward?
+
+Approximately 30 minutes. If required, the newly created Resource Group can be deleted after verifying that no resources have been deployed into it.
+
+5) Will this change impact public-facing applications or websites?
+
+No. This change does not affect any existing production applications, services, or public-facing websites.
+
+Impact Analysis
+No expected outage or service interruption.
+No changes to existing Azure resources or production workloads.
+No impact to network connectivity, application availability, or user access.
+Resource Group creation is an additive infrastructure change only.
+The Resource Group will be used for future Azure resource deployments.
+Risk Level: Low
+Implementation Plan (Rollout)
+
+Estimated Duration: 30 minutes
+
+Steps
+Log in to the Azure Portal using an account with the required permissions.
+Select the appropriate VDOT Azure subscription.
+Navigate to Resource Groups.
+Select Create Resource Group.
+Enter the approved Resource Group name.
+Select the required Azure region (East US or as specified).
+Apply all required VDOT resource tags.
+Review the configuration and validate naming standards.
+Create the Resource Group.
+Verify the Resource Group has been successfully provisioned.
+Record the deployment details in the ServiceNow Change Request.
+Validation Plan
+
+Estimated Validation Time: 15 minutes
+
+Validation Activities
+Verify the Resource Group exists in the correct Azure subscription.
+Confirm the Resource Group name matches the approved naming convention.
+Verify the Resource Group has been created in the correct Azure region.
+Confirm all required tags have been successfully applied.
+Verify the Resource Group status is healthy and available.
+Confirm there are no deployment errors in the Azure Activity Log.
+Validate that the Resource Group is ready for future resource deployments.
+Update the Change Request with the validation results.
+
+Validation Success Criteria
+
+Resource Group created successfully.
+Correct subscription and region confirmed.
+Required tags applied successfully.
+No deployment errors observed.
+Resource Group available for future deployments.
+Backout Plan
+
+Estimated Backout Duration: 15–30 minutes
+
+Backout Steps
+Log in to the Azure Portal.
+Navigate to the VDOT subscription.
+Locate the newly created Resource Group.
+Confirm that no Azure resources have been deployed within the Resource Group.
+Delete the Resource Group.
+Verify the Resource Group has been successfully removed.
+Confirm there are no remaining dependent resources.
+Update the ServiceNow Change Request with the rollback details.
+
+Backout Success Criteria
+
+Newly created Resource Group has been removed.
+No orphaned Azure resources remain.
+Azure subscription is restored to its previous state.
+No impact to existing Azure resources or production services.
+Test Scenario
+
+Test Scenario
+
+Verify that the Azure Resource Group has been successfully created in the designated VDOT subscription with the approved naming convention, correct region, and required governance tags.
+
+Test Scenario Result
+
+Pass – Resource Group was successfully created in the designated Azure subscription. Naming convention, Azure region, and required resource tags were validated successfully, and the Resource Group is ready for future Azure resource deployments.
+
+This template follows the same structure and level of detail as the VEC VM deployment change you shared, making it suitable for submission in ServiceNow.
