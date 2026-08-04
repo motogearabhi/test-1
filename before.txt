@@ -5,3 +5,12 @@ After Change
 
 After Change:
 The Base Deny Network Security Rule has been successfully created on the identified Azure Network Security Groups for both inbound and outbound traffic at the lowest priority (4096). Existing higher-priority NSG rules continue to function as designed, network connectivity has been validated, and the environment is now compliant with the required network security baseline. No production impact or service disruption was observed.
+
+
+
+
+No dedicated Azure Resource Group exists for the VDOT migration workload. Azure resources required for the project have not yet been deployed, and no production resources are impacted. Existing services continue to operate without any changes.
+
+
+
+The new Azure Resource Group has been successfully created in the target subscription following VDOT naming standards and governance requirements. The Resource Group is available to host Azure resources for the VDOT migration project. Validation confirmed that the Resource Group was created successfully with the correct name, subscription, region, and required tags. No impact to existing production services was observed.
