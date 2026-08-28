@@ -1,0 +1,14 @@
+AWS Operations & Governance
+Manage AWS operations and governance activities to maintain a stable, secure, compliant, and reliable cloud environment.
+Terraform & Infrastructure as Code
+Increase adoption of Terraform and Infrastructure as Code by developing reusable, standardized, and maintainable infrastructure configurations, reducing manual effort.
+Cloud Monitoring & Observability
+Improve cloud observability by strengthening monitoring, alerting, and troubleshooting practices using CloudWatch and other monitoring solutions to proactively identify and resolve issues.
+Cost & Resource Optimization
+Analyze AWS resource utilization and identify opportunities for right-sizing, cleanup, and optimization to improve infrastructure efficiency and deliver measurable cost savings.
+Documentation, Runbooks & Knowledge Sharing
+Create and maintain standardized technical documentation, operational procedures, and troubleshooting runbooks. Document solutions and lessons learned to improve knowledge sharing, reduce dependency on individuals, and enable faster issue resolution.
+Proof of Concepts & Continuous Improvement
+Conduct POCs for new AWS services, automation solutions, security controls, monitoring capabilities, and infrastructure improvements. Evaluate the outcomes and recommend solutions that can provide business or operational value.
+Automation & Value Creation
+Identify repetitive or manual operational activities and implement automation to improve efficiency, reduce human error, accelerate delivery, and create measurable value for the team and organization.
